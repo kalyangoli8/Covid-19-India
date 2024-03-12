@@ -70,6 +70,7 @@ app.get('/states/:stateId/', async (request, response) => {
   const {stateId} = request.params
   const getState = `
 SELECT
+*
 FROM state
 WHERE
 state_id = ${stateId};`
@@ -104,7 +105,7 @@ app.get('/districts/:districtId/', async (request, response) => {
   const getDistrict = `
 SELECT *
 FROM district
-WHERE district_id = $fdistrictId)}`
+WHERE district_id = ${districtId};`
   const newDistrict = await db.get(getDistrict)
   const districtResult = districtSnakeToCamel(newDistrict)
   response.send(districtResult)
@@ -116,7 +117,7 @@ app.delete('/districts/:districtId/', async (request, response) => {
   const deleteDistrict = `
 DELETE
 FROM district
-WHERE district_id = $fdistrictId);
+WHERE district_id = ${districtId};
 `
   await db.run(deleteDistrict)
   response.send('District Removed')
@@ -153,7 +154,7 @@ SUM(active) AS active,
 SUM(deaths) AS deaths
 FROM district
 WHERE state_id = ${stateId};`
-  const stateReport = await db.get(getStateReport)
+  const stateReport = await db.get(getstateReport)
   const resultReport = reportSnakeToCamelCase(stateReport)
   response.send(resultReport)
 })
